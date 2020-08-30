@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,13 +31,16 @@ public class DownloadServiceImpl implements DownloadService{
         Path downloadFilePath = getPathForDownload();
         InputStream inputStream = new FileInputStream(downloadFilePath.toFile());
 
+        // write the data to the output stream, time how long this takes
         byte[] buffer = new byte[1024];
         int bytesRead;
+        long startTime = System.nanoTime();
         while((bytesRead = inputStream.read(buffer)) != -1){
             outputStream.write(buffer, 0, bytesRead);
         }
+        long endTime = System.nanoTime();
 
-        return null;
+        return createReportObject(downloadFilePath, startTime, endTime);
     }
 
     private Path getPathForDownload(){
@@ -50,8 +56,8 @@ public class DownloadServiceImpl implements DownloadService{
     }
 
     private DownloadReportDTO createReportObject(Path downloadFile, long startTime, long endTime){
-        DownloadReportDTO downloadReportDTO = new DownloadReportDTO();
-        // other props here
+        DownloadReportDTO downloadReportDTO = new DownloadReportDTO(downloadFile, startTime, endTime);
+        LOG.info("Report: {}", downloadReportDTO.toString());
         return  downloadReportDTO;
     }
 }

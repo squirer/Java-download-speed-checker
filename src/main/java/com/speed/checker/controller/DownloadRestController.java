@@ -25,9 +25,8 @@ public class DownloadRestController {
     }
 
     @GetMapping("/download")
-    public DownloadReportDTO downloadTest(HttpServletResponse response) throws IOException {
+    public void downloadTest(HttpServletResponse response) throws IOException {
         OutputStream outputStream = response.getOutputStream();
         DownloadReportDTO downloadReportDTO = downloadService.runDownloadProcess(outputStream);
-        return downloadReportDTO;
     }
 }

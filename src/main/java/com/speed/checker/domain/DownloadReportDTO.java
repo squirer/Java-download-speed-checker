@@ -1,36 +1,46 @@
 package com.speed.checker.domain;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
+
 public class DownloadReportDTO {
 
-    private String fileName;
+    private Path downloadFile;
+    private long startTime;
+    private long endTime;
+
+    // calculated properties
+    private long fileSizeBytes;
     private long fileSizeMb;
-    private long timeTakenSeconds;
+    private long durationMilliseconds;
+    private long durationSeconds;
 
-    public DownloadReportDTO(){
+    private long speedBytesPerSecond;
+    private long speedMbPerSecond;
 
+
+    public DownloadReportDTO(Path downloadFile, long startTime, long endTime){
+        this.downloadFile = downloadFile;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.runCalculations();
     }
 
-    public String getFileName() {
-        return fileName;
+    private void runCalculations(){
+        File underlyingFile = this.downloadFile.toFile();
+        this.fileSizeBytes = underlyingFile.length();
+        this.fileSizeMb = this.fileSizeBytes / (1024 * 1024);
+        this.durationMilliseconds = this.endTime - this.startTime;
+        this.durationSeconds = TimeUnit.SECONDS.convert(this.durationMilliseconds, TimeUnit.NANOSECONDS);
+        this.speedBytesPerSecond = this.fileSizeBytes / this.durationSeconds;
+        this.speedMbPerSecond = this.fileSizeMb / this.durationSeconds;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    @Override
+    public String toString(){
+        return "downloadFile: " + this.downloadFile + ", Time(s): " + this.durationSeconds +
+                ", Size(Mb): " + this.fileSizeMb + ", Speed(Mb/s): " + this.speedMbPerSecond;
     }
 
-    public long getFileSizeMb() {
-        return fileSizeMb;
-    }
-
-    public void setFileSizeMb(long fileSizeMb) {
-        this.fileSizeMb = fileSizeMb;
-    }
-
-    public long getTimeTakenSeconds() {
-        return timeTakenSeconds;
-    }
-
-    public void setTimeTakenSeconds(long timeTakenSeconds) {
-        this.timeTakenSeconds = timeTakenSeconds;
-    }
 }

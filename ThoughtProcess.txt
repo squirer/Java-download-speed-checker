@@ -1,0 +1,13 @@
+
+
+So my initial thoughts will go here and hopefully this can shed some light on how my mind works as I go!
+
+
+-- Downloader
+
+    Initially thinking here that if this app is living on a cloud server, the user pings it a request and in that
+    process downloads a file. The file we use will be on the server and transferred to the client. For the duration
+    of this process, we time it and then provide a Mb per sec download speed calculation.
+
+
+    

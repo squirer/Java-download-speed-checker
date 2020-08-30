@@ -10,4 +10,9 @@ public class DownloadRestController {
     public String testWelcomeEndpoint(){
         return "Application accessible!";
     }
+
+    @GetMapping
+    public void downloadTest(){
+        
+    }
 }

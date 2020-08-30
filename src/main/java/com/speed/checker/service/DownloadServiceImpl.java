@@ -25,5 +25,6 @@ public class DownloadServiceImpl implements DownloadService{
         // time this process
 
         // return some kind of report object? Maybe file size used in Mb, time taken, and a Download speed
+        return null;
     }
 }

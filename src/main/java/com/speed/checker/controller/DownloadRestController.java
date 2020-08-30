@@ -1,6 +1,7 @@
 package com.speed.checker.controller;
 
 import com.speed.checker.config.ApplicationProperties;
+import com.speed.checker.domain.DownloadReportDTO;
 import com.speed.checker.service.DownloadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,18 +24,10 @@ public class DownloadRestController {
         return "Application accessible!";
     }
 
-    @GetMapping
-    public void downloadTest(HttpServletResponse response) throws IOException {
-
-
-
+    @GetMapping("/download")
+    public DownloadReportDTO downloadTest(HttpServletResponse response) throws IOException {
         OutputStream outputStream = response.getOutputStream();
-        downloadService.runDownloadProcess(outputStream);
-
-
-
-        // ok so at this point we will have finished transferring data to the response
-
-        // return report object to client here ?
+        DownloadReportDTO downloadReportDTO = downloadService.runDownloadProcess(outputStream);
+        return downloadReportDTO;
     }
 }

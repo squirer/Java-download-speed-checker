@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DownloadReportDTO {
 
+    private String clientIp;
     private Path downloadFile;
     private long startTime;
     private long endTime;
@@ -20,10 +21,11 @@ public class DownloadReportDTO {
     private long speedMbPerSecond;
 
 
-    public DownloadReportDTO(Path downloadFile, long startTime, long endTime){
+    public DownloadReportDTO(Path downloadFile, long startTime, long endTime, String clientIp){
         this.downloadFile = downloadFile;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.clientIp = clientIp;
         this.runCalculations();
     }
 
@@ -78,5 +80,13 @@ public class DownloadReportDTO {
 
     public long getSpeedMbPerSecond() {
         return speedMbPerSecond;
+    }
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
     }
 }

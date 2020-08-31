@@ -1,5 +1,6 @@
 package com.speed.checker.service;
 
+import com.speed.checker.Repository.DownloadReportRepository;
 import com.speed.checker.config.ApplicationProperties;
 import com.speed.checker.domain.DownloadReportDTO;
 import org.slf4j.Logger;
@@ -24,14 +25,23 @@ public class DownloadServiceImpl implements DownloadService{
     @Autowired
     ApplicationProperties applicationProperties;
 
+    @Autowired
+    DownloadReportRepository downloadReportRepository;
+
+    /**
+     * The main download service - responsible for writing the file to the output stream and also building and saving
+     * the resulting report to the Repository
+     * @param clientRemoteAddress
+     * @param outputStream
+     * @throws IOException
+     */
     @Override
-    public DownloadReportDTO runDownloadProcess(OutputStream outputStream) throws IOException {
-        LOG.info("Starting download process here");
+    public void runDownloadProcess(String clientRemoteAddress, OutputStream outputStream) throws IOException {
+        LOG.info("Starting download service now...");
 
         Path downloadFilePath = getPathForDownload();
         InputStream inputStream = new FileInputStream(downloadFilePath.toFile());
 
-        // write the data to the output stream, time how long this takes
         byte[] buffer = new byte[applicationProperties.getByteBufferDownloadSize()];
         int bytesRead;
         long startTime = System.nanoTime();
@@ -40,9 +50,20 @@ public class DownloadServiceImpl implements DownloadService{
         }
         long endTime = System.nanoTime();
 
-        return createReportObject(downloadFilePath, startTime, endTime);
+        DownloadReportDTO downloadReportDTO = createReportObject(downloadFilePath, startTime, endTime, clientRemoteAddress);
+        downloadReportRepository.saveDownloadReport(downloadReportDTO);
     }
 
+    @Override
+    public DownloadReportDTO getLastDownloadReportForIp(String clientRemoteAddress) {
+        return downloadReportRepository.getDownloadReportForIp(clientRemoteAddress);
+    }
+
+    /**
+     * Server checks to make sure our test download file exists, throws errors if the property is not set - or if the
+     * file is not existing
+     * @return
+     */
     public Path getPathForDownload(){
         String downloadPathProperty = applicationProperties.getDownloadFileLocation();
         if(StringUtils.isEmpty(downloadPathProperty)){
@@ -55,8 +76,16 @@ public class DownloadServiceImpl implements DownloadService{
         return downloadFilePath;
     }
 
-    public DownloadReportDTO createReportObject(Path downloadFile, long startTime, long endTime){
-        DownloadReportDTO downloadReportDTO = new DownloadReportDTO(downloadFile, startTime, endTime);
+    /**
+     * Create our download report object
+     * @param downloadFile
+     * @param startTime
+     * @param endTime
+     * @param clientIp
+     * @return
+     */
+    public DownloadReportDTO createReportObject(Path downloadFile, long startTime, long endTime, String clientIp){
+        DownloadReportDTO downloadReportDTO = new DownloadReportDTO(downloadFile, startTime, endTime, clientIp);
         LOG.info("Report: {}", downloadReportDTO.toString());
         return  downloadReportDTO;
     }

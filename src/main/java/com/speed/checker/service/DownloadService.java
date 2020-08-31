@@ -7,5 +7,7 @@ import java.io.OutputStream;
 
 public interface DownloadService {
 
-    DownloadReportDTO runDownloadProcess(OutputStream outputStream) throws IOException;
+    void runDownloadProcess(String clientRemoteAddress, OutputStream outputStream) throws IOException;
+
+    DownloadReportDTO getLastDownloadReportForIp(String clientRemoteAddress);
 }

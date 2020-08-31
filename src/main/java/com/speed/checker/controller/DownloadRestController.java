@@ -1,6 +1,5 @@
 package com.speed.checker.controller;
 
-import com.speed.checker.config.ApplicationProperties;
 import com.speed.checker.domain.DownloadReportDTO;
 import com.speed.checker.service.DownloadService;
 import com.speed.checker.service.DownloadServiceImpl;
@@ -10,21 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class DownloadRestController {
 
     private static Logger LOG = LoggerFactory.getLogger(DownloadServiceImpl.class.getName());
-
-    List<DownloadReportDTO> reportsList = new ArrayList<>();
-
-    @Autowired
-    ApplicationProperties applicationProperties;
 
     @Autowired
     DownloadService downloadService;
@@ -35,14 +28,15 @@ public class DownloadRestController {
     }
 
     @GetMapping("/download")
-    public void downloadTest(HttpServletResponse response) throws IOException {
+    public void downloadTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
         OutputStream outputStream = response.getOutputStream();
-        DownloadReportDTO downloadReportDTO = downloadService.runDownloadProcess(outputStream);
-        reportsList.add(downloadReportDTO);
+
+        String clientRemoteAddress = request.getRemoteAddr();
+        downloadService.runDownloadProcess(clientRemoteAddress, outputStream);
     }
 
     @GetMapping("/report")
-    public DownloadReportDTO getLastReport(){
-        return reportsList.get(reportsList.size()-1);
+    public DownloadReportDTO getLastDownloadReport(HttpServletRequest request){
+        return downloadService.getLastDownloadReportForIp(request.getRemoteAddr());
     }
 }

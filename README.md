@@ -1,10 +1,34 @@
-# Java-download-speed-checker
+# Quick start: Testing the already deployed server
 
-App comes bundled in a zip file using the Maven assembly at: 
+
+To test my deployed application:
+
+- Past the download url into your web browser
+- When this download completes, paste the report url
+- View the download report
+
+
+    Download GET Request:
+    
+        http://178.79.162.105:7777/download
+        
+    (wait until above download completes)
+    
+        
+    Report GET Request
+    
+        http://178.79.162.105:7777/report
+
+
+
+## Background
+
+This project is set up as a Maven Spring Boot project and builds a Java application to run on a server
+based on the assembly xml here: 
 
     src/main/deploy/assembly/assembly.xml
-    
 
+    
 folder structure after extraction:
 
     bin
@@ -17,7 +41,7 @@ folder structure after extraction:
         (logs will be here)
 
 
-## Running the App
+## To Run the app yourself 
 
 To run the app on a server - unzip the distribution zip from the target folder, go to the bin folder inside and execute:
 
@@ -44,6 +68,9 @@ To start the download test:
     http://178.79.162.105:7777/download
 
 
+## Retrieve the report after the above download completes
+
+    http://178.79.162.105:7777/report    
 
 
 

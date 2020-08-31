@@ -22,4 +22,13 @@ So my initial thoughts will go here and hopefully this can shed some light on ho
       - Backend provides download report of stats and what happened + Mb/sec speed
 
 
+- Right now I have a a 'DownloadReportRepository' which is a simple Hashmap of client IP Address -> download report
+  this could later be extended for other data storage options. I don't think this application needs a repository,
+  but i found it as the closest solution I could get to show the actual download report without having to go to the
+  server and tail the logs.
+
+  Ideally there would be a client that with the push of a button it sends one request to do the download and the other
+  to check the timings and statistics.
+
+
 

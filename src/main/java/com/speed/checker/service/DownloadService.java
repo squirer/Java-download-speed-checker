@@ -2,7 +2,6 @@ package com.speed.checker.service;
 
 import com.speed.checker.domain.DownloadReportDTO;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 

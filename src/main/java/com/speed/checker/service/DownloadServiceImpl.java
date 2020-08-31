@@ -32,7 +32,7 @@ public class DownloadServiceImpl implements DownloadService{
         InputStream inputStream = new FileInputStream(downloadFilePath.toFile());
 
         // write the data to the output stream, time how long this takes
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[applicationProperties.getByteBufferDownloadSize()];
         int bytesRead;
         long startTime = System.nanoTime();
         while((bytesRead = inputStream.read(buffer)) != -1){
@@ -43,7 +43,7 @@ public class DownloadServiceImpl implements DownloadService{
         return createReportObject(downloadFilePath, startTime, endTime);
     }
 
-    private Path getPathForDownload(){
+    public Path getPathForDownload(){
         String downloadPathProperty = applicationProperties.getDownloadFileLocation();
         if(StringUtils.isEmpty(downloadPathProperty)){
             throw new IllegalArgumentException("Download file property is empty, specify in application.properties with: download.file.location");
@@ -55,7 +55,7 @@ public class DownloadServiceImpl implements DownloadService{
         return downloadFilePath;
     }
 
-    private DownloadReportDTO createReportObject(Path downloadFile, long startTime, long endTime){
+    public DownloadReportDTO createReportObject(Path downloadFile, long startTime, long endTime){
         DownloadReportDTO downloadReportDTO = new DownloadReportDTO(downloadFile, startTime, endTime);
         LOG.info("Report: {}", downloadReportDTO.toString());
         return  downloadReportDTO;

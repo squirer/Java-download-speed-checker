@@ -10,3 +10,16 @@ So my initial thoughts will go here and hopefully this can shed some light on ho
     of this process, we time it and then provide a Mb per sec download speed calculation.
 
 
+-- Difficulties: The challenges i find are that:
+
+    - I can write the download file to the outputstream of the response and time this process - but once its written,
+      it seems difficult then to also pass data the download report I have created back to the client. I am
+      thinking here that with more time, this would function like so:
+
+      - Frontend - makes a request for speed to be tested
+      - Backend, confirms request and writes the download file (timer for this process runs)
+      - Frontend then makes a subsequent request for the details
+      - Backend provides download report of stats and what happened + Mb/sec speed
+
+
+

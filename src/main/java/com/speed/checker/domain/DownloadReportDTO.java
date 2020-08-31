@@ -43,4 +43,40 @@ public class DownloadReportDTO {
                 ", Size(Mb): " + this.fileSizeMb + ", Speed(Mb/s): " + this.speedMbPerSecond;
     }
 
+
+    public Path getDownloadFile() {
+        return downloadFile;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public long getFileSizeBytes() {
+        return fileSizeBytes;
+    }
+
+    public long getFileSizeMb() {
+        return fileSizeMb;
+    }
+
+    public long getDurationMilliseconds() {
+        return durationMilliseconds;
+    }
+
+    public long getDurationSeconds() {
+        return durationSeconds;
+    }
+
+    public long getSpeedBytesPerSecond() {
+        return speedBytesPerSecond;
+    }
+
+    public long getSpeedMbPerSecond() {
+        return speedMbPerSecond;
+    }
 }
